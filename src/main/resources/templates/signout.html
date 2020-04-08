@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<div th:replace="fragments :: patnavigation"></div>
+<ul class="navbar-nav ">
+    <p th:if="${session.username} != null">
+
+    <li class="nav-item active" >
+        <a class="nav-link" href="/login">Sign in </a></li>
+    <li class="nav-item active" style="float:right">
+        <a class="nav-link" href="/signout">Sign out </a>
+    </li>
+</ul>
+<p>
+<h1 style="color:blue;"><b>
+    You have been logged out Successfully. See you next time.</b>
+</h1></p>
+</body>
+</html>

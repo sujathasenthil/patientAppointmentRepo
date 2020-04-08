@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title th:text="'Hospital Management System' + ${title == null ? '' : ' :: ' + title}">Hospital Management System</title>
+</head>
+<body style="background-image:url(/css/hospital1.jpg)">
+<div th:replace="fragments :: navigation"></div>
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="jumbotron">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+
+<!--                <br class="row">-->
+
+                <h2 class="h4">Contact Information</h2>
+<!--                </br>-->
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col-md-3">
+                <p><span>Address:</span> 123 WestGlen Drive,</p>
+                <p> Suite 721, StLouis, Missouri 63043</p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Phone:</span> <a href="tel://13145679020">+ 1314 567 9020</a></p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Email:</span> <a href="mailto:enquiry@sai.com">enquiry@sai.com</a></p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Website</span> <a href="#">www.sai.com</a></p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+
+
+</html>

@@ -1,0 +1,48 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+<div th:replace="fragments :: navigation"></div>
+<form method="post" class="form-container"
+      style="margin-left:30px; margin-top:50px;" th:object="${resetPassword}">
+    <div class = "header" style="margin-bottom:5%;">
+        <h1 th:text="${title}">Reset Password</h1>
+    </div>
+    <div><strong><h1 th:text="${param.q}" class="error">test</h1></strong></div>
+    <div class="form-group row">
+        <label th:for="text" class="col-sm-2 col-form-label">Username</label>
+        <div class="col-xs-4">
+            <input type = "text" class="form-control mx-sm-6" th:field ="*{name}" />
+            <span th:errors="*{name}" class="error"></span>
+
+        </div></div>
+
+    <div class="form-group row">
+        <label th:for="password" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-xs-4">
+            <input type= "password" class="form-control mx-sm-6" th:field="*{password}" />
+            <span th:errors="*{password}" class="error"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label th:for="confirm" class="col-sm-2 col-form-label">Confirm Password</label>
+        <div class="col-xs-4">
+            <input type= "password" class="form-control mx-sm-6" th:field ="*{confirm}" /></div>
+        <span th:errors="*{confirm}" class="error"></span>
+    </div>
+    <div class="form-group row">
+
+        <label th:for="sec_question" class="col-sm-2 col-form-label">Security Question</label>
+        <div class="col-xs-4">
+            In which city did you born?
+            <input type= "text" class="form-control mx-sm-6" th:field="*{sec_question}" />
+            <span th:errors="*{sec_question}" class="error"></span>
+        </div>
+    </div>
+    <div><h1 th:text="${param.Q}" class="error">test</h1></div>
+
+    <button type="submit" class="btn btn-primary" style="margin-left:120px;">Reset </button>
+</form>
+
+</body>
+</html>

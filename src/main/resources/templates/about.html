@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title th:text="'Hospital Management System' + ${title == null ? '' : ' :: ' + title}">Hospital Management System</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div th:replace="fragments :: navigation"></div>
+<div class="jumbotron">
+    <div class="container">
+<!--        <marquee direction="right">Welcome to Sai Hospital</marquee>-->
+        <center>
+            <h1>
+                <br>
+                The Right </br>
+                Pediatrician
+            </h1>
+            <h3>
+                <br>
+                We at MediCare are always fully focused on helping your child </br>
+                <br>and you to overcame any hurdle, whether it's just a seasonal flue</br>
+                <br>or a serious issue</br>
+            </h3>
+        </center>
+
+    </div>
+</div>
+
+</body>
+</html>

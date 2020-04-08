@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title th:text="'Hospital Management System' + ${title == null ? '' : ' :: ' + title}">Hospital Management System</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div th:replace="fragments :: navigation"></div>
+<!--<div class="jumbotron">-->
+<!--    <div class="container">-->
+<!--        <marquee direction="right">Welcome to Sai Hospital</marquee>-->
+<!--    </div>-->
+<!--</div>-->
+<form class= "form-container custom-centered" method="post" th:object="${signUser}">
+    <div><strong><h1 th:text="${param.q}" class="error" >test</h1></strong></div>
+
+    <div class="form-group row ">
+        <label th:for="email" class="col-sm-2 col-form-label" >Username</label>
+        <div class="col-xs-4">
+<!--            <input type="text" id="email" class="form-control mx-sm-3" aria-describedby ="emailHelpInline" th:field="*{email}"/>-->
+            <input type="text"  class="form-control mx-sm-6" id ="name" th:field="*{name}" />
+            <span th:errors="*{name}" class="error"></span>
+
+        </div>
+    </div>
+
+    <div class="form-group row" >
+        <label th:for="inputPassword6" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-xs-4">
+
+            <input type = "password"  id="inputPassword6"  class="form-control mx-sm-6" aria-describedby="passwordHelpInline" th:field="*{password}" />
+
+
+            <span th:errors="*{password}" class="error"></span>
+
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    <a href="/patients/recovery">Forgot Password?</a>
+
+
+    <p>
+        Don't have an account? <a href ="/patients/signUp">Create One</a>
+    </p>
+</form>
+
+
+</body>
+</html>
