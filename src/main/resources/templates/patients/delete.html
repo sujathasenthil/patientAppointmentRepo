@@ -1,0 +1,45 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class>
+<div th:replace="fragments :: patnavigation"></div>
+<!--<p th:text="${errorMsg}" style="color:red;"></p>-->
+<form method="post">
+<!--    style="margin-right:30px; margin-top:50px;">-->
+<!--    th:object="${scheduleAppt}"-->
+<!--    <p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">-->
+<!--    <p th:text="${session.sUserId}" ></p>-->
+
+    <th:block th:each="appt : ${allAppts}">
+        <div class="form-group">
+                <label>
+                    <span th:text="${appt.apptDate}"></span>
+                    <span th:text="${appt.apptTime}"></span>
+                    <span th:text="${appt.id}"></span>
+<!--                    <span th:text="${appt.patients.?getId()}"></span>-->
+                <input type="checkbox" name="apptIds" th:value="${appt.id}" class="form-control">
+<!--                    <input type="checkbox" name="apptIds" th:value="${appt.patients.?getId()}" class="form-control">-->
+                </label>
+
+        </div>
+    </th:block>
+
+<!--    <th:block th:each="appt : ${allAppts}">-->
+<!--        <div class="form-group">-->
+<!--            <h2 th:if = '${(appt.patients_id).equals("${session.sUserId}")}'>-->
+<!--            <label>-->
+<!--                <span th:text="${appt.apptDate}"></span>-->
+<!--                <span th:text="${appt.apptTime}"></span>-->
+
+<!--                <input type="checkbox" name="apptIds" th:value="${appt.patients_id}" class="form-control">-->
+<!--            </label>-->
+<!--            </h2>-->
+<!--        </div>-->
+<!--    </th:block>-->
+
+
+    <div class="form-group">
+
+        <input type="submit" value="Delete" class="btn btn-danger">
+    </div>
+</body>
+</html>

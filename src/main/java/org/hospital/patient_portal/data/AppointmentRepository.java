@@ -19,7 +19,7 @@ public interface AppointmentRepository extends CrudRepository<ScheduleAppt,Integ
 //    public Boolean HasTime(String Appttime);
     public List<ScheduleAppt> findAll();
    // @Query("SELECT p, c FROM Patient p join p.info c WHERE p.id =:id AND p.rev = c.rev")
- //   public List<ScheduleAppt> findById(Integer id);
+   // public List<ScheduleAppt> findById(@Param("id") Integer id);
     //  public List<ScheduleAppt> findByPatientId(Integer id);
    // public Optional<ScheduleAppt> findByName(String name);
 }
