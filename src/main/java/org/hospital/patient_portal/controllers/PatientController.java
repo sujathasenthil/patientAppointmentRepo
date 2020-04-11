@@ -64,19 +64,7 @@ public class PatientController {
         patientRepository.save(newPatient);
         session.setAttribute("username", newPatient.getName());
         session.setAttribute("sUserId", newPatient.getId());
-//        model.addAttribute("name", newPatient.getName());
-//        model.addAttribute("lastName", newPatient.getLastName());
-//        model.addAttribute("id",newPatient.getId());
-//        model.addAttribute("password", newPatient.getPassword());
-//        model.addAttribute("gender", newPatient.getName());
-//        model.addAttribute("maritalStatus", newPatient.getMaritalStatus());
-//        model.addAttribute("dateOfBirth", newPatient.getDateOfBirth());
-//        model.addAttribute("phone", newPatient.getName());
-//        model.addAttribute("email", newPatient.getEmail());
-//        model.addAttribute("sec_question", newPatient.getSec_question());
-//        model.addAttribute("address", newPatient.getAddress());
-//        model.addAttribute("city", newPatient.getCity());
-//        model.addAttribute("zipCode", newPatient.getZipCode());
+        model.addAttribute("patients",existingPatient);
         return "patients/index";
     }
 
@@ -88,10 +76,16 @@ public class PatientController {
     }
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
     public String processPatientApptForm(@RequestParam("pname") String name, Patient patient, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws ParseException {
-//       System.out.println("apptDate"+apptDate.format(DateTimeFormatter.ISO_DATE));
-//        System.out.println("localDate"+LocalDate.now().toString());
+       //LocalDate apptDate=newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE);
+     //   System.out.println("apptDate"+newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE));
+       //System.out.println();
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        String formattedDate = date.format(formatter);
+        LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
+        System.out.println("localDate"+parsedDate);
 
-//        if ((apptDate.format(DateTimeFormatter.ISO_DATE)).isBefore(LocalDate.now())) {
+//        if ((newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE))..isBefore(LocalDate.now())) {
 //            model.addAttribute("errorMsg", "Choose future Date!");
 //            return "patients/makeAppt";
 //        }
@@ -101,7 +95,7 @@ public class PatientController {
         else{
             //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
                 Patient newPatient = patientRepository.findByName(name);
-                model.addAttribute("patient", newPatient);
+                model.addAttribute("patients", newPatient);
                 newScheduleAppt.setApptDate(newScheduleAppt.getApptDate());
                 newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
                 newScheduleAppt.setPatients(newPatient);
@@ -113,6 +107,46 @@ public class PatientController {
 //                return "patients/makeAppt";
 //        }
     }
+
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    public String delete(Model model) {
+        model.addAttribute("title","Delete Appointment");
+        model.addAttribute("patients", PatientData.getAll());
+        List<ScheduleAppt> allAppts=appointmentRepository.findAll();
+
+        model.addAttribute("allAppts",allAppts);
+        return "patients/delete";
+    }
+
+        @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
+    public String deleteUser(@RequestParam(required = false) int[] apptIds, Model model) {
+       //     model.addAttribute("patients", PatientData.getAll());
+            model.addAttribute("patients", PatientData.getAll());
+            List<ScheduleAppt> allAppts=appointmentRepository.findAll();
+            if (apptIds!= null){
+                for(int id : apptIds){
+                    appointmentRepository.deleteById(id);
+                }}
+        //    return("redirect:");
+        return "patient/index";
+
+    }
+//    @GetMapping("delete")
+//    public String displayDeletePatient(Model model){
+//        model.addAttribute("title","Delete Patient");
+//        model.addAttribute("patients",patientRepository.findAll());
+//        return "patients/delete";
+//    }
+//
+//    @PostMapping("delete")
+//    public String displayprocessDeletePatientForm(@RequestParam(required = false) int[] patientIds){
+//        if (patientIds!= null){
+//            for(int id : patientIds){
+//                patientRepository.deleteById(id);
+//            }}
+//        return("redirect:");
+//    }
+//
 
 
     @RequestMapping(value = "recovery", method = RequestMethod.GET)
@@ -156,22 +190,6 @@ public class PatientController {
     }
 }
 
-//    @GetMapping("delete")
-//    public String displayDeletePatient(Model model){
-//        model.addAttribute("title","Delete Patient");
-//        model.addAttribute("patients",patientRepository.findAll());
-//        return "patients/delete";
-//    }
-//
-//    @PostMapping("delete")
-//    public String displayprocessDeletePatientForm(@RequestParam(required = false) int[] patientIds){
-//        if (patientIds!= null){
-//            for(int id : patientIds){
-//                patientRepository.deleteById(id);
-//            }}
-//        return("redirect:");
-//    }
-//
 //    @GetMapping("detail")
 //    public String displayPatientDetails(@RequestParam Integer patientId, Model model) {
 //

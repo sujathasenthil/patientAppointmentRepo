@@ -6,6 +6,8 @@ import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,13 +27,20 @@ public class ScheduleAppt{
     @GenericGenerator(name="native",strategy = "native")
     private int id;
 
+   // @Future(message = "Choose future date")
+    //@DateTimeFormat(pattern="yyyy-MM-dd")
+
+    @FutureOrPresent(message="enter valid date")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private LocalDate apptDate;
+    @NotNull
+    private Date apptDate;
+
 
     @Basic
     private String apptTime;
 
     @ManyToOne(targetEntity = Patient.class)
+    @JoinColumn(name="patients_id")
     private Patient patients;
 
     //private final List<Patient> patients = new ArrayList<>();
@@ -39,7 +48,7 @@ public class ScheduleAppt{
     public ScheduleAppt() {
     }
 
-    public ScheduleAppt(LocalDate apptDate, String apptTime, Patient patient) {
+    public ScheduleAppt(Date apptDate, String apptTime, Patient patient) {
         this.apptDate = apptDate;
         this.apptTime = apptTime;
         this.patients=patient;
@@ -61,11 +70,11 @@ public class ScheduleAppt{
         this.patients = patients;
     }
 
-    public LocalDate getApptDate() {
+    public Date getApptDate() {
         return apptDate;
     }
 
-    public void setApptDate(LocalDate apptDate) {
+    public void setApptDate(Date apptDate) {
         this.apptDate = apptDate;
     }
 

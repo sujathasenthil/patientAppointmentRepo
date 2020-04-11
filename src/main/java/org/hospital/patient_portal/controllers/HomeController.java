@@ -58,6 +58,7 @@ public class HomeController {
         if (searchPatient != null && signUser.getPassword().equals(searchPatient.getPassword())) {
             session.setAttribute("username", searchPatient.getName());
             session.setAttribute("sUserId", searchPatient.getId());
+            model.addAttribute("patients", searchPatient);
             return "patients/index";
         }
         model.addAttribute("message", "Invalid Credentials");
