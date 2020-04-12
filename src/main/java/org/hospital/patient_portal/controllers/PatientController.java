@@ -20,9 +20,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,44 +75,31 @@ public class PatientController {
         return "patients/makeAppt";
     }
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
-    public String processPatientApptForm(@RequestParam("pname") String name, @RequestParam YearMonth apptDate, Patient patient, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws ParseException {
-        LocalDate date = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
-        String formattedDate = date.format(formatter);
-        LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
-        System.out.println("localDate"+parsedDate);
-        System.out.println("apptDate"+apptDate);
-
-//        if ((newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE))..isBefore(LocalDate.now())) {
-//            model.addAttribute("errorMsg", "Choose future Date!");
-//            return "patients/makeAppt";
-//        }
-        if (bindingResult.hasErrors()) {
-            return "patients/makeAppt";
-        }
-        else{
-            //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
+    public String processPatientApptForm(@RequestParam("pname") String name,@RequestParam(value="apptDate",required = false) String apptDate, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
+        System.out.println("apptDatetime"+newScheduleAppt.getApptDate());
+        System.out.println("REquestparam"+apptDate);
+        System.out.println("offdate"+ LocalDateTime.parse(apptDate.replace( " " , "T" )));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String replacedT=apptDate.replace( " " , "T" );
+        LocalDateTime dateTime = LocalDateTime.parse(replacedT, formatter);
+        if(newScheduleAppt.getApptDate() != null) {
+            if (bindingResult.hasErrors()) {
+                return "patients/makeAppt";
+            } else {
+                //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
-//            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-//            Date date = inputFormat.parse(inputString);
-
-// Format date into output format
-            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
-            String outputString = outputFormat.format(date);
-
-
-                newScheduleAppt.setApptDate((Date) formatter.parse(apptDate));
-               // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
+                // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
+                newScheduleAppt.setApptDate(dateTime);
                 newScheduleAppt.setPatients(newPatient);
                 appointmentRepository.save(newScheduleAppt);
                 return "patients/index";
+            }
         }
-//        else {
-//                model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
-//                return "patients/makeAppt";
-//        }
+        else {
+                model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
+                return "patients/makeAppt";
+        }
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.GET)

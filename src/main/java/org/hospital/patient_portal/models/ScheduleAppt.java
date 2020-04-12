@@ -11,6 +11,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.sql.Timestamp;
 import java.time.YearMonth;
@@ -31,10 +32,9 @@ public class ScheduleAppt{
    // @Future(message = "Choose future date")
     //@DateTimeFormat(pattern="yyyy-MM-dd")
 
-//    @FutureOrPresent(message="enter valid date")
-    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
-    @NotNull
-    private YearMonth apptDate;
+   // @FutureOrPresent(message="enter valid date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime apptDate;
 //    @Column(name= "Date")
 //    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
 //    private YearMonth yearMonth;
@@ -51,7 +51,7 @@ public class ScheduleAppt{
     public ScheduleAppt() {
     }
 
-    public ScheduleAppt(YearMonth apptDate, Patient patient) {
+    public ScheduleAppt(LocalDateTime apptDate, Patient patient) {
         this.apptDate = apptDate;
 //        this.apptTime = apptTime;
         this.patients=patient;
@@ -73,11 +73,11 @@ public class ScheduleAppt{
         this.patients = patients;
     }
 
-    public YearMonth getApptDate() {
+    public LocalDateTime getApptDate() {
         return apptDate;
     }
 
-    public void setApptDate(YearMonth apptDate) {
+    public void setApptDate(LocalDateTime apptDate) {
         this.apptDate = apptDate;
     }
 }
