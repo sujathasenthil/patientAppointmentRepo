@@ -76,17 +76,19 @@ public class PatientController {
     }
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
     public String processPatientApptForm(@RequestParam("pname") String name,@RequestParam(value="apptDate",required = false) String apptDate, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
-        System.out.println("apptDatetime"+newScheduleAppt.getApptDate());
-        System.out.println("REquestparam"+apptDate);
-        System.out.println("offdate"+ LocalDateTime.parse(apptDate.replace( " " , "T" )));
+        System.out.println("apptDatetime" + newScheduleAppt.getApptDate());
+        System.out.println("REquestparam" + apptDate);
+        System.out.println("offdate" + LocalDateTime.parse(apptDate.replace(" ", "T")));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String replacedT=apptDate.replace( " " , "T" );
+        String replacedT = apptDate.replace(" ", "T");
         LocalDateTime dateTime = LocalDateTime.parse(replacedT, formatter);
-        if(newScheduleAppt.getApptDate() != null) {
-            if (bindingResult.hasErrors()) {
-                return "patients/makeAppt";
-            } else {
-                //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
+
+        if (bindingResult.hasErrors()) {
+            return "patients/makeAppt";
+        } else {
+            //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
+            //
+            if (!(appointmentRepository.findAll().contains(dateTime))) {
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
                 // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
@@ -94,14 +96,12 @@ public class PatientController {
                 newScheduleAppt.setPatients(newPatient);
                 appointmentRepository.save(newScheduleAppt);
                 return "patients/index";
-            }
-        }
-        else {
+            } else {
                 model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
                 return "patients/makeAppt";
+            }
         }
     }
-
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public String delete(Model model) {
         model.addAttribute("title","Delete Appointment");
