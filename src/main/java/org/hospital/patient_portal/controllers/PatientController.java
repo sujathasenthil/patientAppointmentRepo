@@ -17,10 +17,12 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,15 +77,13 @@ public class PatientController {
         return "patients/makeAppt";
     }
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
-    public String processPatientApptForm(@RequestParam("pname") String name, Patient patient, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws ParseException {
-       //LocalDate apptDate=newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE);
-     //   System.out.println("apptDate"+newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE));
-       //System.out.println();
+    public String processPatientApptForm(@RequestParam("pname") String name, @RequestParam YearMonth apptDate, Patient patient, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws ParseException {
         LocalDate date = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
         String formattedDate = date.format(formatter);
         LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
         System.out.println("localDate"+parsedDate);
+        System.out.println("apptDate"+apptDate);
 
 //        if ((newScheduleAppt.getApptDate().format(DateTimeFormatter.ISO_DATE))..isBefore(LocalDate.now())) {
 //            model.addAttribute("errorMsg", "Choose future Date!");
@@ -96,8 +96,17 @@ public class PatientController {
             //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
-                newScheduleAppt.setApptDate(newScheduleAppt.getApptDate());
-                newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
+//            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+//            Date date = inputFormat.parse(inputString);
+
+// Format date into output format
+            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+            String outputString = outputFormat.format(date);
+
+
+                newScheduleAppt.setApptDate((Date) formatter.parse(apptDate));
+               // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
                 newScheduleAppt.setPatients(newPatient);
                 appointmentRepository.save(newScheduleAppt);
                 return "patients/index";
@@ -120,9 +129,9 @@ public class PatientController {
 
         @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public String deleteUser(@RequestParam(required = false) int[] apptIds, Model model) {
-       //     model.addAttribute("patients", PatientData.getAll());
-            model.addAttribute("patients", PatientData.getAll());
-            List<ScheduleAppt> allAppts=appointmentRepository.findAll();
+//       //     model.addAttribute("patients", PatientData.getAll());
+//            model.addAttribute("patients", PatientData.getAll());
+//            List<ScheduleAppt> allAppts=appointmentRepository.findAll();
             if (apptIds!= null){
                 for(int id : apptIds){
                     appointmentRepository.deleteById(id);

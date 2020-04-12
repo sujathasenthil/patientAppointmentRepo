@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,14 +31,16 @@ public class ScheduleAppt{
    // @Future(message = "Choose future date")
     //@DateTimeFormat(pattern="yyyy-MM-dd")
 
-    @FutureOrPresent(message="enter valid date")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+//    @FutureOrPresent(message="enter valid date")
+    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     @NotNull
-    private Date apptDate;
+    private YearMonth apptDate;
+//    @Column(name= "Date")
+//    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+//    private YearMonth yearMonth;
 
-
-    @Basic
-    private String apptTime;
+//    @Basic
+//    private String apptTime;
 
     @ManyToOne(targetEntity = Patient.class)
     @JoinColumn(name="patients_id")
@@ -48,9 +51,9 @@ public class ScheduleAppt{
     public ScheduleAppt() {
     }
 
-    public ScheduleAppt(Date apptDate, String apptTime, Patient patient) {
+    public ScheduleAppt(YearMonth apptDate, Patient patient) {
         this.apptDate = apptDate;
-        this.apptTime = apptTime;
+//        this.apptTime = apptTime;
         this.patients=patient;
     }
 
@@ -70,20 +73,11 @@ public class ScheduleAppt{
         this.patients = patients;
     }
 
-    public Date getApptDate() {
+    public YearMonth getApptDate() {
         return apptDate;
     }
 
-    public void setApptDate(Date apptDate) {
+    public void setApptDate(YearMonth apptDate) {
         this.apptDate = apptDate;
     }
-
-    public String getApptTime() {
-        return apptTime;
-    }
-
-    public void setApptTime(String apptTime) {
-        this.apptTime = apptTime;
-    }
-
 }
