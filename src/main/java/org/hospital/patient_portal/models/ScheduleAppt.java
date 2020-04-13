@@ -21,66 +21,11 @@ import java.util.List;
 
 @Entity
 public class ScheduleAppt {
-
-// extends AbstractEntity implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private int id;
 
-    // @Future(message = "Choose future date")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-//    private LocalDateTime apptDate;
-//
-////    @Basic
-////    private String apptTime;
-//
-//    //    @Column(name= "Date")
-////    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
-////    private YearMonth yearMonth;
-//
-//
-//    @ManyToOne(targetEntity = Patient.class)
-//    @JoinColumn(name="patients_id")
-//    private Patient patients;
-//
-//    //private final List<Patient> patients = new ArrayList<>();
-//
-//    public ScheduleAppt() {
-//    }
-//
-//    public ScheduleAppt(LocalDateTime apptDate, Patient patient) {
-//        this.apptDate = apptDate;
-//        this.patients=patient;
-//    }
-//
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public Patient getPatients() {
-//        return patients;
-//    }
-//
-//    public void setPatients(Patient patients) {
-//        this.patients = patients;
-//    }
-//
-//    public LocalDateTime getApptDate() {
-//        return apptDate;
-//    }
-//
-//    public void setApptDate(LocalDateTime apptDate) {
-//        this.apptDate = apptDate;
-//    }
-//
-//}
-//Both Date &Time
     //@NotNull
     @Future(message = "Enter future date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -89,22 +34,9 @@ public class ScheduleAppt {
     @Basic
     private String apptTime;
 
-
-    // @Future(message = "Choose future date")
-    //@DateTimeFormat(pattern="yyyy-MM-dd")
-
-    // @FutureOrPresent(message="enter valid date")
-
-    //    @Column(name= "Date")
-//    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
-//    private YearMonth yearMonth;
-
-
     @ManyToOne(targetEntity = Patient.class)
     @JoinColumn(name = "patients_id")
     private Patient patients;
-
-    //private final List<Patient> patients = new ArrayList<>();
 
     public ScheduleAppt() {
     }
@@ -147,3 +79,49 @@ public class ScheduleAppt {
         this.apptTime = apptTime;
     }
 }
+
+// @Future(message = "Choose future date")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+//    private LocalDateTime apptDate;
+//
+////    @Basic
+////    private String apptTime;
+//
+//    @ManyToOne(targetEntity = Patient.class)
+//    @JoinColumn(name="patients_id")
+//    private Patient patients;
+//
+//    public ScheduleAppt() {
+//    }
+//
+//    public ScheduleAppt(LocalDateTime apptDate, Patient patient) {
+//        this.apptDate = apptDate;
+//        this.patients=patient;
+//    }
+//
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    public Patient getPatients() {
+//        return patients;
+//    }
+//
+//    public void setPatients(Patient patients) {
+//        this.patients = patients;
+//    }
+//
+//    public LocalDateTime getApptDate() {
+//        return apptDate;
+//    }
+//
+//    public void setApptDate(LocalDateTime apptDate) {
+//        this.apptDate = apptDate;
+//    }
+//
+//}
+//Both Date &Time

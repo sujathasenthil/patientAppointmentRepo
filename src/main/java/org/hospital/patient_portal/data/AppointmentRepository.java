@@ -17,7 +17,7 @@ import java.util.Optional;
 public interface AppointmentRepository extends CrudRepository<ScheduleAppt,Integer> {
     public List<ScheduleAppt> findAll();
    // @Query("select ScheduleAppt where ScheduleAppt.apptDate=checkDate")
-  //  public List<ScheduleAppt> findByDate(LocalDate checkDate);
+    //public List<ScheduleAppt> findByDate(LocalDate apptDate);
     //public List<ScheduleAppt> findByTime(String apptTime);
     //  public List<ScheduleAppt> findByPatientId(Integer id);
    // public Optional<ScheduleAppt> findByName(String name);
