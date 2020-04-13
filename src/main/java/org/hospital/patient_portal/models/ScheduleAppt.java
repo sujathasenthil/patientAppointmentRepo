@@ -20,30 +20,88 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class ScheduleAppt{
+public class ScheduleAppt {
 
 // extends AbstractEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator = "native")
-    @GenericGenerator(name="native",strategy = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
 
-   // @Future(message = "Choose future date")
+    // @Future(message = "Choose future date")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+//    private LocalDateTime apptDate;
+//
+////    @Basic
+////    private String apptTime;
+//
+//    //    @Column(name= "Date")
+////    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+////    private YearMonth yearMonth;
+//
+//
+//    @ManyToOne(targetEntity = Patient.class)
+//    @JoinColumn(name="patients_id")
+//    private Patient patients;
+//
+//    //private final List<Patient> patients = new ArrayList<>();
+//
+//    public ScheduleAppt() {
+//    }
+//
+//    public ScheduleAppt(LocalDateTime apptDate, Patient patient) {
+//        this.apptDate = apptDate;
+//        this.patients=patient;
+//    }
+//
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    public Patient getPatients() {
+//        return patients;
+//    }
+//
+//    public void setPatients(Patient patients) {
+//        this.patients = patients;
+//    }
+//
+//    public LocalDateTime getApptDate() {
+//        return apptDate;
+//    }
+//
+//    public void setApptDate(LocalDateTime apptDate) {
+//        this.apptDate = apptDate;
+//    }
+//
+//}
+//Both Date &Time
+    //@NotNull
+    @Future(message = "Enter future date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate apptDate;
+
+    @Basic
+    private String apptTime;
+
+
+    // @Future(message = "Choose future date")
     //@DateTimeFormat(pattern="yyyy-MM-dd")
 
-   // @FutureOrPresent(message="enter valid date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime apptDate;
-//    @Column(name= "Date")
+    // @FutureOrPresent(message="enter valid date")
+
+    //    @Column(name= "Date")
 //    @DateTimeFormat(pattern = "dd-MM-yyyy hh:mm:ss")
 //    private YearMonth yearMonth;
 
-//    @Basic
-//    private String apptTime;
 
     @ManyToOne(targetEntity = Patient.class)
-    @JoinColumn(name="patients_id")
+    @JoinColumn(name = "patients_id")
     private Patient patients;
 
     //private final List<Patient> patients = new ArrayList<>();
@@ -51,10 +109,10 @@ public class ScheduleAppt{
     public ScheduleAppt() {
     }
 
-    public ScheduleAppt(LocalDateTime apptDate, Patient patient) {
+    public ScheduleAppt(LocalDate apptDate, String apptTime, Patient patient) {
         this.apptDate = apptDate;
-//        this.apptTime = apptTime;
-        this.patients=patient;
+        this.apptTime = apptTime;
+        this.patients = patient;
     }
 
     public int getId() {
@@ -73,11 +131,19 @@ public class ScheduleAppt{
         this.patients = patients;
     }
 
-    public LocalDateTime getApptDate() {
+    public LocalDate getApptDate() {
         return apptDate;
     }
 
-    public void setApptDate(LocalDateTime apptDate) {
+    public void setApptDate(LocalDate apptDate) {
         this.apptDate = apptDate;
+    }
+
+    public String getApptTime() {
+        return apptTime;
+    }
+
+    public void setApptTime(String apptTime) {
+        this.apptTime = apptTime;
     }
 }

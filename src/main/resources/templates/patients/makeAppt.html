@@ -4,24 +4,24 @@
 <body class>
 <div th:replace="fragments :: patnavigation"></div>
 <!--<p th:text="${errorMsg}" style="color:red;"></p>-->
-<form method="post" style="margin-right:30px; margin-top:50px;" th:object="${scheduleAppt}">
-    <p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">
-    <p th:text="${session.sUserId}" ></p>
+<form method="post" style="margin-left:50px; margin-top:50px;" th:object="${scheduleAppt}">
+<!--    <p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">-->
+<!--    <p th:text="${session.sUserId}" ></p>-->
     <div class="form-group">
         <label>Appointment Date
-            <input type="datetime-local"  th:field="*{apptDate}"  class="form-control">
-<!--            <span th:errors="*{sec_question}" class="error"></span>-->
+<!--            <input type="datetime-local"  th:field="*{apptDate}"  class="form-control">-->
+            <input type="date"  th:field="*{apptDate}"  class="form-control">
             <span th:errors="*{apptDate}" class="error"></span>
         </label>
 <!--        <p class="error" th:errors="${scheduleAppt.apptDate}"></p>-->
     </div>
-<!--    <div class="form-group">-->
-<!--        <label>Appointment Time-->
-<!--            <input type="time" th:field="*{apptTime}"  class="form-control">-->
-<!--            <span th:errors="*{apptTime}" class="error"></span>-->
-<!--        </label>-->
-<!--&lt;!&ndash;        <p class="error" th:errors="${scheduleAppt.apptTime}"></p>&ndash;&gt;-->
-<!--    </div>-->
+    <div class="form-group">
+        <label>Appointment Time
+            <input type="time" th:field="*{apptTime}"  class="form-control">
+            <span th:errors="*{apptTime}" class="error"></span>
+        </label>
+<!--        <p class="error" th:errors="${scheduleAppt.apptTime}"></p>-->
+    </div>
     <div class="form-group">
         <input type="hidden"  th:value="${session.username}" name="pname" id="pname" />
         <input type="submit" value="Schedule" class="btn btn-success">

@@ -10,8 +10,7 @@
         <div class="col-xs-4">
             <input type ="text" class="form-control mx-sm-10" id ="name" th:field="*{name}" />
             <span th:errors="*{name}" class="error"></span>
-            <!--<small id="emailHelpInline" class="text-muted"></small>-->
-        </div>
+         </div>
     </div>
 
     <div class="form-group row">
@@ -60,7 +59,6 @@
     <div class="form-group row">
         <label th:for="gender" class="col-sm-2 col-form-label">Gender</label>
         <div class="col-xs-4">
-<!--            <input type = "text" class="form-control mx-sm-6" th:field ="*{age}" />-->
             <select th:field="${patient.gender}">
                 <option th:each="gender : ${genders}"
                         th:value="${gender}"

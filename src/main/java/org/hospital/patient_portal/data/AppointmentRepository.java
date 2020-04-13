@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.smartcardio.Card;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Date;
@@ -14,12 +15,10 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends CrudRepository<ScheduleAppt,Integer> {
-    //public List<ScheduleAppt> findByDateAndTime(LocalDate Apptdate, String Appttime);
-//    public Boolean HasDate(LocalDate Apptdate);
-//    public Boolean HasTime(String Appttime);
     public List<ScheduleAppt> findAll();
-   // @Query("SELECT p, c FROM Patient p join p.info c WHERE p.id =:id AND p.rev = c.rev")
-   // public List<ScheduleAppt> findById(@Param("id") Integer id);
+   // @Query("select ScheduleAppt where ScheduleAppt.apptDate=checkDate")
+  //  public List<ScheduleAppt> findByDate(LocalDate checkDate);
+    //public List<ScheduleAppt> findByTime(String apptTime);
     //  public List<ScheduleAppt> findByPatientId(Integer id);
    // public Optional<ScheduleAppt> findByName(String name);
 }

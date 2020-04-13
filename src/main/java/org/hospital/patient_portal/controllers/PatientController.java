@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.smartcardio.Card;
 import javax.validation.Valid;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -74,25 +75,23 @@ public class PatientController {
         model.addAttribute(new ScheduleAppt());
         return "patients/makeAppt";
     }
+//Date&Time
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
-    public String processPatientApptForm(@RequestParam("pname") String name,@RequestParam(value="apptDate",required = false) String apptDate, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
-        System.out.println("apptDatetime" + newScheduleAppt.getApptDate());
-        System.out.println("REquestparam" + apptDate);
-        System.out.println("offdate" + LocalDateTime.parse(apptDate.replace(" ", "T")));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String replacedT = apptDate.replace(" ", "T");
-        LocalDateTime dateTime = LocalDateTime.parse(replacedT, formatter);
-
-        if (bindingResult.hasErrors()) {
+    public String processPatientApptForm(@RequestParam("pname") String name, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
+     //   System.out.println("date booked"+ (appointmentRepository.findByDate(newScheduleAppt.getApptDate()) == null));
+//        System.out.println("whether date is booked"+(appointmentRepository.findAll().contains(newScheduleAppt.getApptDate())));
+//        System.out.println("whether time is booked"+(appointmentRepository.findAll().contains(newScheduleAppt.getApptTime())));
+        if (errors.hasErrors()) {
             return "patients/makeAppt";
         } else {
-            //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
-            //
-            if (!(appointmentRepository.findAll().contains(dateTime))) {
+            if (!((appointmentRepository.findAll().contains(newScheduleAppt.getApptDate())) &&(appointmentRepository.findAll().contains(newScheduleAppt.getApptTime()))))  {
+//                System.out.println("apptDatebooked:"+(appointmentRepository.findByDate(newScheduleAppt.getApptDate()) == null));
+//                System.out.println("apptTimebooked:"+appointmentRepository.findByTime(newScheduleAppt.getApptTime() ) ==null);
+
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
-                // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
-                newScheduleAppt.setApptDate(dateTime);
+                newScheduleAppt.setApptDate(newScheduleAppt.getApptDate());
+                newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
                 newScheduleAppt.setPatients(newPatient);
                 appointmentRepository.save(newScheduleAppt);
                 return "patients/index";
@@ -102,46 +101,20 @@ public class PatientController {
             }
         }
     }
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
-    public String delete(Model model) {
-        model.addAttribute("title","Delete Appointment");
-        model.addAttribute("patients", PatientData.getAll());
-        List<ScheduleAppt> allAppts=appointmentRepository.findAll();
 
-        model.addAttribute("allAppts",allAppts);
-        return "patients/delete";
-    }
-
-        @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public String deleteUser(@RequestParam(required = false) int[] apptIds, Model model) {
-//       //     model.addAttribute("patients", PatientData.getAll());
-//            model.addAttribute("patients", PatientData.getAll());
-//            List<ScheduleAppt> allAppts=appointmentRepository.findAll();
-            if (apptIds!= null){
-                for(int id : apptIds){
-                    appointmentRepository.deleteById(id);
-                }}
-        //    return("redirect:");
-        return "patient/index";
+    @RequestMapping(value = "delete/{apptId}", method = RequestMethod.GET)
+    public String deleteUser(@PathVariable int apptId, Model model) {
+          ScheduleAppt scheduleAppt=appointmentRepository.findById(apptId).get();
+          appointmentRepository.delete(scheduleAppt);
+          model.addAttribute("appts",appointmentRepository.findAll());
+          return "patients/view";
 
     }
-//    @GetMapping("delete")
-//    public String displayDeletePatient(Model model){
-//        model.addAttribute("title","Delete Patient");
-//        model.addAttribute("patients",patientRepository.findAll());
-//        return "patients/delete";
-//    }
-//
-//    @PostMapping("delete")
-//    public String displayprocessDeletePatientForm(@RequestParam(required = false) int[] patientIds){
-//        if (patientIds!= null){
-//            for(int id : patientIds){
-//                patientRepository.deleteById(id);
-//            }}
-//        return("redirect:");
-//    }
-//
-
+    @RequestMapping(value="view",method = RequestMethod.GET)
+    public String processEditForm(Model model){
+        model.addAttribute("appts",appointmentRepository.findAll());
+        return "patients/view";
+    }
 
     @RequestMapping(value = "recovery", method = RequestMethod.GET)
     public String displayRecoverPassword(Model model) {
@@ -183,23 +156,32 @@ public class PatientController {
         return "patients/signout";
     }
 }
-
-//    @GetMapping("detail")
-//    public String displayPatientDetails(@RequestParam Integer patientId, Model model) {
-//
-//        Optional<Patient> result = patientRepository.findById(patientId);
-//
-//        if (result.isEmpty()) {
-//            model.addAttribute("title", "Invalid Patient ID: " + patientId);
+//        @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
+//    public String processPatientApptForm(@RequestParam("pname") String name,@RequestParam(value="apptDate",required = false) String apptDate, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
+//        System.out.println("apptDatetime" + newScheduleAppt.getApptDate());
+//        System.out.println("REquestparam" + apptDate);
+//        System.out.println("offdate" + LocalDateTime.parse(apptDate.replace("T ", " ")));
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        String replacedT = apptDate.replace("T", " ");
+//        System.out.println( "replacedT"+replacedT);
+//        LocalDateTime dateTime = LocalDateTime.parse(replacedT, formatter);
+//        System.out.println("dateTime"+dateTime);
+//        if (bindingResult.hasErrors()) {
+//            return "patients/makeAppt";
 //        } else {
-//            Patient patient = result.get();
-//            model.addAttribute("title", patient.getName() + " Details");
-//            model.addAttribute("patient", patient);
-////            model.addAttribute("tags",event.getTags());
+//            //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
+//            //
+//         //   if (!(appointmentRepository.findAll().contains(dateTime))) {
+//                Patient newPatient = patientRepository.findByName(name);
+//                model.addAttribute("patients", newPatient);
+//                // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
+//                newScheduleAppt.setApptDate(dateTime);
+//                newScheduleAppt.setPatients(newPatient);
+//                appointmentRepository.save(newScheduleAppt);
+//                return "patients/index";
+////            } else {
+////                model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
+////                return "patients/makeAppt";
+////            }
 //        }
-//
-//        return "patients/detail";
 //    }
-
-
-
