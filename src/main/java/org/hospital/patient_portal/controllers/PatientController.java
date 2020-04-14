@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 import javax.smartcardio.Card;
 import javax.validation.Valid;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import static sun.jvm.hotspot.runtime.BasicObjectLock.size;
 
 @Controller
 @RequestMapping("patients")
@@ -78,16 +81,23 @@ public class PatientController {
 //Date&Time
     @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
     public String processPatientApptForm(@RequestParam("pname") String name, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
-     //   System.out.println("date booked"+ (appointmentRepository.findByDate(newScheduleAppt.getApptDate()) == null));
-//        System.out.println("whether date is booked"+(appointmentRepository.findAll().contains(newScheduleAppt.getApptDate())));
-//        System.out.println("whether time is booked"+(appointmentRepository.findAll().contains(newScheduleAppt.getApptTime())));
         if (errors.hasErrors()) {
             return "patients/makeAppt";
         } else {
-            if (!((appointmentRepository.findAll().contains(newScheduleAppt.getApptDate())) &&(appointmentRepository.findAll().contains(newScheduleAppt.getApptTime()))))  {
-//                System.out.println("apptDatebooked:"+(appointmentRepository.findByDate(newScheduleAppt.getApptDate()) == null));
-//                System.out.println("apptTimebooked:"+appointmentRepository.findByTime(newScheduleAppt.getApptTime() ) ==null);
-
+            if(newScheduleAppt.getApptDate().isBefore(LocalDate.now()))
+            {
+               // System.out.println("past date");
+                model.addAttribute("errorMsg","Enter Future Date");
+                return "patients/makeAppt";
+            }
+            if(appointmentRepository.checkIfApptExist(newScheduleAppt.getApptDate(),newScheduleAppt.getApptTime() ) >0 )
+            {
+                System.out.println("Dont proceed");
+                System.out.println("Appointment slot not available, choose different timing");
+                model.addAttribute("errorMsg", "Appointment slot not available, choose different timing");
+                return "patients/makeAppt";
+            }
+            else{
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
                 newScheduleAppt.setApptDate(newScheduleAppt.getApptDate());
@@ -95,9 +105,6 @@ public class PatientController {
                 newScheduleAppt.setPatients(newPatient);
                 appointmentRepository.save(newScheduleAppt);
                 return "patients/index";
-            } else {
-                model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
-                return "patients/makeAppt";
             }
         }
     }

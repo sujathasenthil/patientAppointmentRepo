@@ -20,7 +20,7 @@
         </thead>
     <tr th:each="appt : ${appts}">
 <!--        <h2 th:if = '${(appt.patients.?getId()).equals("${session.sUserId}")}'>-->
-        <!--        <td th:text=${appt.id}></td>-->
+<!--                <td th:text=${appt.id}></td>-->
         <td th:text=${appt.apptDate}></td>
         <td th:text=${appt.apptTime}></td>
         <td><a th:href="@{'/patients/delete/' + ${appt.id}}">Delete</a></td>

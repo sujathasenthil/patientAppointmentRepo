@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "schedule_appt",schema="hospital_portal")
 public class ScheduleAppt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -29,9 +30,11 @@ public class ScheduleAppt {
     //@NotNull
     @Future(message = "Enter future date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name="appt_date")
     private LocalDate apptDate;
 
     @Basic
+    @Column(name = "appt_time")
     private String apptTime;
 
     @ManyToOne(targetEntity = Patient.class)
