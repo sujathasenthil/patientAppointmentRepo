@@ -19,8 +19,7 @@ public interface AppointmentRepository extends CrudRepository<ScheduleAppt,Integ
    @Query(value = "select count(*) from schedule_appt where appt_date=:apptDate && appt_time=:apptTime",nativeQuery = true)
     public int checkIfApptExist(LocalDate apptDate, String apptTime);
 
- //  public List<ScheduleAppt> findIfTimeSlotAvailable()
-    //public List<ScheduleAppt> findByTime(String apptTime);
+   @Query(value="select * from schedule_appt where patient_id= :patient_id", nativeQuery =true)
+   public List<ScheduleAppt> findRecByPatientId(int patient_id);
     //  public List<ScheduleAppt> findByPatientId(Integer id);
-   // public Optional<ScheduleAppt> findByName(String name);
 }

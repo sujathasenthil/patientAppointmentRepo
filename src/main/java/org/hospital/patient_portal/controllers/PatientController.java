@@ -6,6 +6,7 @@ import org.hospital.patient_portal.data.AppointmentRepository;
 import org.hospital.patient_portal.data.PatientRepository;
 import org.hospital.patient_portal.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.smartcardio.Card;
 import javax.validation.Valid;
@@ -68,6 +70,7 @@ public class PatientController {
         patientRepository.save(newPatient);
         session.setAttribute("username", newPatient.getName());
         session.setAttribute("sUserId", newPatient.getId());
+        model.addAttribute("patId",newPatient.getId());
         model.addAttribute("patients",existingPatient);
         return "patients/index";
     }
@@ -110,7 +113,7 @@ public class PatientController {
     }
 
     @RequestMapping(value = "delete/{apptId}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable int apptId, Model model) {
+    public String deleteUser(@PathVariable int sUserId, @PathVariable int apptId, Model model) {
           ScheduleAppt scheduleAppt=appointmentRepository.findById(apptId).get();
           appointmentRepository.delete(scheduleAppt);
           model.addAttribute("appts",appointmentRepository.findAll());
@@ -118,9 +121,15 @@ public class PatientController {
 
     }
     @RequestMapping(value="view",method = RequestMethod.GET)
-    public String processEditForm(Model model){
-        model.addAttribute("appts",appointmentRepository.findAll());
-        return "patients/view";
+    public String processEditForm(Model model, @RequestParam("patId") int patientId, HttpServletRequest req){
+        System.out.println("pid"+patientId);
+        //if (appointmentRepository apptId == sUserId){
+       //int patId=req.getAttribute(sUserId);
+ //       model.addAttribute("patId",sUserId);
+        //if(appointmentRepository.findById(req.getAttribute(sUserId))!= null) {
+            model.addAttribute("appts", appointmentRepository.findRecByPatientId(patientId));
+            return "patients/view";
+       // }
     }
 
     @RequestMapping(value = "recovery", method = RequestMethod.GET)
