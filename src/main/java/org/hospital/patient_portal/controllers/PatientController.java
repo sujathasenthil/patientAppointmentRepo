@@ -1,39 +1,20 @@
 package org.hospital.patient_portal.controllers;
 
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.hospital.patient_portal.data.AppointmentRepository;
-//import org.hospital.patient_portal.data.LogRepository;
 import org.hospital.patient_portal.data.PatientRepository;
 import org.hospital.patient_portal.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.smartcardio.Card;
 import javax.validation.Valid;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static sun.jvm.hotspot.runtime.BasicObjectLock.size;
 
 @Controller
+@SessionAttributes("sUserId")
 @RequestMapping("patients")
 public class PatientController {
 
@@ -70,8 +51,6 @@ public class PatientController {
         patientRepository.save(newPatient);
         session.setAttribute("username", newPatient.getName());
         session.setAttribute("sUserId", newPatient.getId());
-        model.addAttribute("patId",newPatient.getId());
-        model.addAttribute("patients",existingPatient);
         return "patients/index";
     }
 
@@ -89,7 +68,6 @@ public class PatientController {
         } else {
             if(newScheduleAppt.getApptDate().isBefore(LocalDate.now()))
             {
-               // System.out.println("past date");
                 model.addAttribute("errorMsg","Enter Future Date");
                 return "patients/makeAppt";
             }
@@ -113,23 +91,23 @@ public class PatientController {
     }
 
     @RequestMapping(value = "delete/{apptId}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable int sUserId, @PathVariable int apptId, Model model) {
-          ScheduleAppt scheduleAppt=appointmentRepository.findById(apptId).get();
+    public String deleteUser(@PathVariable int apptId, Model model) {
+          //ScheduleAppt scheduleAppt=appointmentRepository.findById(apptId).get();
+        ScheduleAppt scheduleAppt=appointmentRepository.findById(apptId).get();
+        int patient_id=(Integer) model.getAttribute("sUserId");
           appointmentRepository.delete(scheduleAppt);
-          model.addAttribute("appts",appointmentRepository.findAll());
+          model.addAttribute("appts",appointmentRepository.findRecByPatientId(patient_id));
           return "patients/view";
 
     }
+
     @RequestMapping(value="view",method = RequestMethod.GET)
-    public String processEditForm(Model model, @RequestParam("patId") int patientId, HttpServletRequest req){
-        System.out.println("pid"+patientId);
-        //if (appointmentRepository apptId == sUserId){
-       //int patId=req.getAttribute(sUserId);
- //       model.addAttribute("patId",sUserId);
-        //if(appointmentRepository.findById(req.getAttribute(sUserId))!= null) {
-            model.addAttribute("appts", appointmentRepository.findRecByPatientId(patientId));
-            return "patients/view";
-       // }
+    public String processEditForm(Model model){
+       // Iterable<ScheduleAppt> appts;
+        int patient_id=(Integer) model.getAttribute("sUserId");
+        System.out.println("patId"+patient_id);
+        model.addAttribute("appts", appointmentRepository.findRecByPatientId(patient_id));
+        return "patients/view";
     }
 
     @RequestMapping(value = "recovery", method = RequestMethod.GET)
@@ -172,32 +150,3 @@ public class PatientController {
         return "patients/signout";
     }
 }
-//        @RequestMapping(value = "makeAppt", method = RequestMethod.POST)
-//    public String processPatientApptForm(@RequestParam("pname") String name,@RequestParam(value="apptDate",required = false) String apptDate, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
-//        System.out.println("apptDatetime" + newScheduleAppt.getApptDate());
-//        System.out.println("REquestparam" + apptDate);
-//        System.out.println("offdate" + LocalDateTime.parse(apptDate.replace("T ", " ")));
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        String replacedT = apptDate.replace("T", " ");
-//        System.out.println( "replacedT"+replacedT);
-//        LocalDateTime dateTime = LocalDateTime.parse(replacedT, formatter);
-//        System.out.println("dateTime"+dateTime);
-//        if (bindingResult.hasErrors()) {
-//            return "patients/makeAppt";
-//        } else {
-//            //if (!((appointmentRepository.HasDate(apptDate)) &&(appointmentRepository.HasTime(apptTime))))  {
-//            //
-//         //   if (!(appointmentRepository.findAll().contains(dateTime))) {
-//                Patient newPatient = patientRepository.findByName(name);
-//                model.addAttribute("patients", newPatient);
-//                // newScheduleAppt.setApptTime(newScheduleAppt.getApptTime());
-//                newScheduleAppt.setApptDate(dateTime);
-//                newScheduleAppt.setPatients(newPatient);
-//                appointmentRepository.save(newScheduleAppt);
-//                return "patients/index";
-////            } else {
-////                model.addAttribute("errorMsg", "Try scheduling different timing, chosen time slot is booked already! ");
-////                return "patients/makeAppt";
-////            }
-//        }
-//    }

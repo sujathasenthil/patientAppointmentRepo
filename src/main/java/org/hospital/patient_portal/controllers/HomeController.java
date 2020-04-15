@@ -1,6 +1,4 @@
 package org.hospital.patient_portal.controllers;
-
-import org.hospital.patient_portal.data.AppointmentRepository;
 import org.hospital.patient_portal.data.PatientRepository;
 import org.hospital.patient_portal.models.Patient;
 import org.hospital.patient_portal.models.SignUser;
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 

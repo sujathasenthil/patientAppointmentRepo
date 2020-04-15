@@ -4,27 +4,18 @@
 <div th:replace="fragments :: patnavigation"></div>
 <div style="margin-right:30px; margin-top:50px;">
 
-<!--<p> Username</p>-->
-<!--<p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">-->
-<!--<p>UserId</p>-->
-<!--<p th:text="${session.sUserId}" ></p>-->
-
 <table class="centeredTable">
     <thead>
         <tr>
-    <!--        <th scope="col">ApptId</th>-->
             <th scope="col">ApptDate</th>
             <th scope="col">ApptTime</th>
             <th scope="col">Delete</th>
         </tr>
         </thead>
     <tr th:each="appt : ${appts}">
-<!--        <h2 th:if = '${(appt.patients_id).equals("${session.sUserId}")}'>-->
-<!--                <td th:text=${appt.id}></td>-->
         <td th:text=${appt.apptDate}></td>
         <td th:text=${appt.apptTime}></td>
         <td><a th:href="@{'/patients/delete/' + ${appt.id}}">Delete</a></td>
-<!--        </h2>-->
     </tr>
 </table>
 </div>

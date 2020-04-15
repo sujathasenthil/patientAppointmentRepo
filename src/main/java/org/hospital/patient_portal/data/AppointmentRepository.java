@@ -16,10 +16,10 @@ import java.util.Optional;
 @Repository
 public interface AppointmentRepository extends CrudRepository<ScheduleAppt,Integer> {
     public List<ScheduleAppt> findAll();
+ //   public List<ScheduleAppt> findById(int patient_Id);
    @Query(value = "select count(*) from schedule_appt where appt_date=:apptDate && appt_time=:apptTime",nativeQuery = true)
     public int checkIfApptExist(LocalDate apptDate, String apptTime);
 
-   @Query(value="select * from schedule_appt where patient_id= :patient_id", nativeQuery =true)
+   @Query(value="select * from schedule_appt where patients_id= :patient_id", nativeQuery =true)
    public List<ScheduleAppt> findRecByPatientId(int patient_id);
-    //  public List<ScheduleAppt> findByPatientId(Integer id);
-}
+   }
