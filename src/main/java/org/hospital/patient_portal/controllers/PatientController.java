@@ -102,12 +102,47 @@ public class PatientController {
     }
 
     @RequestMapping(value="view",method = RequestMethod.GET)
-    public String processEditForm(Model model){
-       // Iterable<ScheduleAppt> appts;
+    public String processViewForm(Model model){
         int patient_id=(Integer) model.getAttribute("sUserId");
-        System.out.println("patId"+patient_id);
         model.addAttribute("appts", appointmentRepository.findRecByPatientId(patient_id));
         return "patients/view";
+    }
+
+    @RequestMapping(value = "edit/{apptId}", method = RequestMethod.GET)
+    public String processEditForm( @PathVariable int apptId, Model model) {
+        model.addAttribute("title","Reschedule Appt");
+        model.addAttribute("appt",appointmentRepository.findById(apptId));
+        return "patients/edit";
+    }
+
+    @RequestMapping(value="edit/{apptId}",method = RequestMethod.POST)
+    public String processEditForm(@PathVariable int apptId, @RequestParam("pname") String name, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
+        System.out.println("apptId"+apptId);
+        ScheduleAppt scheduleAppt = appointmentRepository.findById(apptId).get();
+        System.out.println("newapptDate"+newScheduleAppt.getApptDate());
+        System.out.println("newappttime"+newScheduleAppt.getApptTime());
+        if (errors.hasErrors()) {
+            return "patients/edit/apptId";
+        } else {
+            if (newScheduleAppt.getApptDate().isBefore(LocalDate.now())) {
+                model.addAttribute("errorMsg", "Enter Future Date");
+                return "patients/edit/apptId";
+            }
+            if (appointmentRepository.checkIfApptExist(newScheduleAppt.getApptDate(), newScheduleAppt.getApptTime()) > 0) {
+                System.out.println("Dont proceed");
+                System.out.println("Appointment slot not available, choose different timing");
+                model.addAttribute("errorMsg", "Appointment slot not available, choose different timing");
+                return "patients/edit/apptId";
+            } else {
+                Patient newPatient = patientRepository.findByName(name);
+                model.addAttribute("patients", newPatient);
+                scheduleAppt.setApptDate(newScheduleAppt.getApptDate());
+                scheduleAppt.setApptTime(newScheduleAppt.getApptTime());
+                scheduleAppt.setPatients(newPatient);
+                appointmentRepository.save(scheduleAppt);
+                return "patients/index";
+            }
+        }
     }
 
     @RequestMapping(value = "recovery", method = RequestMethod.GET)

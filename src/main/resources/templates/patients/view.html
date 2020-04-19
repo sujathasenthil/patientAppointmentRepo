@@ -9,12 +9,14 @@
         <tr>
             <th scope="col">ApptDate</th>
             <th scope="col">ApptTime</th>
+            <th scope="col">Edit</th>
             <th scope="col">Delete</th>
         </tr>
         </thead>
     <tr th:each="appt : ${appts}">
         <td th:text=${appt.apptDate}></td>
         <td th:text=${appt.apptTime}></td>
+        <td><a th:href="@{'/patients/edit/' + ${appt.id}}">Edit</a></td>
         <td><a th:href="@{'/patients/delete/' + ${appt.id}}">Delete</a></td>
     </tr>
 </table>
