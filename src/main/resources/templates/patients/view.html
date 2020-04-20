@@ -3,8 +3,8 @@
 <body>
 <div th:replace="fragments :: patnavigation"></div>
 <div style="margin-right:30px; margin-top:50px;">
-
-<table class="centeredTable">
+    <p th:text="${errorMsg}" style="color:red;"></p>
+<table>
     <thead>
         <tr>
             <th scope="col">ApptDate</th>

@@ -117,22 +117,23 @@ public class PatientController {
 
     @RequestMapping(value="edit/{apptId}",method = RequestMethod.POST)
     public String processEditForm(@PathVariable int apptId, @RequestParam("pname") String name, ScheduleAppt newScheduleAppt, BindingResult bindingResult, Errors errors, Model model, HttpSession session ) throws Exception {
-        System.out.println("apptId"+apptId);
+//        System.out.println("apptId"+apptId);
         ScheduleAppt scheduleAppt = appointmentRepository.findById(apptId).get();
-        System.out.println("newapptDate"+newScheduleAppt.getApptDate());
-        System.out.println("newappttime"+newScheduleAppt.getApptTime());
+//        System.out.println("newapptDate"+newScheduleAppt.getApptDate());
+//        System.out.println("newappttime"+newScheduleAppt.getApptTime());
         if (errors.hasErrors()) {
-            return "patients/edit/apptId";
+            model.addAttribute("errorMsg", "Error-Change Date/time");
+            return "patients/view";
         } else {
             if (newScheduleAppt.getApptDate().isBefore(LocalDate.now())) {
                 model.addAttribute("errorMsg", "Enter Future Date");
-                return "patients/edit/apptId";
+                return "patients/view";
             }
             if (appointmentRepository.checkIfApptExist(newScheduleAppt.getApptDate(), newScheduleAppt.getApptTime()) > 0) {
                 System.out.println("Dont proceed");
                 System.out.println("Appointment slot not available, choose different timing");
                 model.addAttribute("errorMsg", "Appointment slot not available, choose different timing");
-                return "patients/edit/apptId";
+                return "patients/view";
             } else {
                 Patient newPatient = patientRepository.findByName(name);
                 model.addAttribute("patients", newPatient);
