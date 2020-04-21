@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class>
+<body>
 <div th:replace="fragments :: patnavigation"></div>
-<p th:text="${errorMsg}" style="color:red;"></p>
-<form method="post" style="margin-left:50px; margin-top:50px;" th:object="${scheduleAppt}">
-<!--    <p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">-->
-<!--    <p th:text="${session.sUserId}" ></p>-->
+    <div><p th:text="${errorMsg}" style="color:red;"></p>
+    <form method="post" style="margin-left:50px; margin-top:50px;" th:object="${scheduleAppt}">
     <div class="form-group">
         <label>Appointment Date
             <input type="date"  th:field="*{apptDate}"  class="form-control">
@@ -38,5 +36,6 @@
         <input type="submit" value="Schedule" class="btn btn-success">
     </div>
 </form>
+</div>
 </body>
 </html>

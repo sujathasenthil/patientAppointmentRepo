@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body style="background-image:url(/css/hospital1.jpg)">
+<body>
 <div th:replace="fragments :: patnavigation"></div>
-<!--<p><h3>Last Appointment</h3></p>-->
-
 <h1 style="text-align:center; padding-top:5%;"><span th:if="${session.username == null}">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Welcome
     <p th:text="${#strings.capitalizeWords(session.username)}" th:unless="${session == null}" style="align:center">
 
     </p></h1>
-<img src="/css/hospital1.jpg" width="50%" height="30%" style="align:center;
-margin-left:350px; "/>
+<img src="/css/hospital1.jpg" id="bg" alt="">
 </body>
 </html>
