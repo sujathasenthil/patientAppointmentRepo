@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+<div th:replace="fragments :: patnavigation"></div>
+
+    <p th:text="${errorMsg}" style="color:red;"></p>
+<form method="post" style="margin-left:50px; margin-top:50px;" th:object="${appt}">
+    <div class="form-group">
+        <label>Appointment Date
+            <input type="date"  th:field="*{apptDate}"  class="form-control">
+            <p th:text="${errorMsg}" style="color:red;"></p>
+            <span th:errors="*{apptDate}" class="error"></span>
+        </label>
+    </div>
+
+    <select th:field="*{apptTime}">
+        <option th:value="9.00A.M" th:text="9.00A.M"></option>
+        <option th:value="9.30A.M" th:text="9.30A.M"></option>
+        <option th:value="10.00A.M" th:text="10.00A.M"></option>
+        <option th:value="10.30A.M" th:text="10.30A.M"></option>
+        <option th:value="11.00A.M" th:text="11.00A.M"></option>
+        <option th:value="11.30A.M" th:text="11.30A.M"></option>
+        <option th:value="12.00P.M" th:text="12.00P.M"></option>
+        <option th:value="12.00P.M" th:text="12.30P.M"></option>
+        <option th:value="12.30P.M" th:text="12.30P.M"></option>
+        <option th:value="1.00P.M" th:text="1.00P.M"></option>
+        <option th:value="1.30P.M" th:text="1.30P.M"></option>
+        <option th:value="2.00P.M" th:text="2.00P.M"></option>
+        <option th:value="2.30P.M" th:text="2.30P.M"></option>
+        <option th:value="3.00P.M" th:text="3.00P.M"></option>
+        <option th:value="3.30P.M" th:text="3.30P.M"></option>
+    </select>
+    <p class="error" th:errors="*{apptTime}"></p>
+    <div>
+        <input type="hidden"  th:value="${session.username}" name="pname" id="pname" />
+        <input type="hidden"  th:value="${id}" name="apptId" id="apptId" />
+        <input type="submit" value="Update" class="btn btn-success">
+    </div>
+</form>
+ </body>
+</html>
